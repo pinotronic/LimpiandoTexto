@@ -10,14 +10,15 @@ class ManejoArchivo():
         pass
 
     def cargarInformacion(self):
-        filename = filedialog.askopenfilename()
+        filename = filedialog.askopenfilename( )
         #file = open(filename, 'r')
-        file = open(filename, 'r', encoding = "utf-8")
+        file = open(filename, 'r')
         buff = file.read()
         file.close()
         return buff,filename
 
-    def guardarEnArchivo(self,Archivoagurdar):
+
+    def guardarEnArchivo(Archivoagurdar):
         nombrearch = fd.asksaveasfilename(initialdir="/", title="Guardar como", filetypes=(
                     ("txt files", "*.txt"), ("todos los archivos", "*.*")))
         if nombrearch!= '':
@@ -25,4 +26,3 @@ class ManejoArchivo():
             archi1.write(Archivoagurdar)
             archi1.close()
             messagebox.showinfo("Información", "Los datos fueron guardados en el archivo.")
-            

@@ -15,16 +15,22 @@ class Operativo():
         return textoSustituido 
         
     def realizandoProceso(self,Textos):
-        ContenedorTexto = Operativo.cambiandoBullets(self,Textos) # Esta funcion cambia los bullets
-        ContenedorTexto = Operativo.colocandoPuntosEnDondeNoLosHay(self,ContenedorTexto)
+        ContenedorTexto = Operativo.quitandoEspacios(self,Textos) # quita los espacios de mas
+
+        ContenedorTexto = Operativo.cambiandoBullets(self,ContenedorTexto) # Esta funcion cambia los bullets
+        ContenedorTexto = Operativo.colocandoPuntosEnDondeNoLosHay(self,ContenedorTexto)        
         ContenedorTexto = Operativo.cambiandoBulletsdeCinco(self,ContenedorTexto)
         ContenedorTexto= ContenedorTexto.replace('\x0c', '\n ') # templaza los saltos de pagina, por saltos de Linea
         ContenedorTexto = Operativo.limpiarTextodeSaltoLinea(self,ContenedorTexto) # quita los saltos de linea
-        ContenedorTexto = Operativo.quitandoEspacios(self,ContenedorTexto) # quita los espacios de mas
-        ContenedorTexto = Operativo.insertarSaltosdeLineaEstrategicos(self,ContenedorTexto) # despues de ciertos caracteres da saltos de linea
         ContenedorTexto = Operativo.Espacioencomasypuntos(self,ContenedorTexto)
+        ContenedorTexto = Operativo.insertarSaltosdeLineaEstrategicos(self,ContenedorTexto) # despues de ciertos caracteres da saltos de linea
+
         ContenedorTexto= Operativo.arreglandoNumros(self,ContenedorTexto)
         ContenedorTexto = Operativo.arregloIncisos(self,ContenedorTexto)
+        ContenedorTexto = ContenedorTexto.replace('\n\n \n', '\n')
+        ContenedorTexto = ContenedorTexto.replace('\n ', '\n')
+
+
         return ContenedorTexto
 
     def colocandoPuntosEnDondeNoLosHay(self,ContenedorTexto):
@@ -38,8 +44,9 @@ class Operativo():
                 Casilla3 = Casilla2
                 Casilla2 = Casilla1
                 Casilla1 = letra
-                if Casilla3.isupper() == True and Casilla2 == "\n" and Casilla1.islower == True:
-                    Casilla3 = ".\n"
+                # M \n m
+                if Casilla3.islower()  == True and Casilla2 == "\n" and Casilla1.isupper() == True:
+                    Casilla2 = ".\n"
                     TextoFinal = TextoFinal + Final
                 else:
                     TextoFinal = TextoFinal + Final
@@ -63,20 +70,31 @@ class Operativo():
                 Casilla3 = Casilla2
                 Casilla2 = Casilla1
                 Casilla1 = letra
+                # \n . " " M
                 if Casilla4 == "\n" and Casilla3 == "." and Casilla2 == " " and Casilla1.isupper() == True :
                     Casilla3 = "•"
                     TextoFinal = TextoFinal +Final
+                    # \n o " " M
                 elif Casilla4 == "\n" and Casilla3 == "o" and Casilla2 == " " and Casilla1.isupper() == True :
                     Casilla3 = "•"
                     TextoFinal = TextoFinal +Final
+                    # \n - " " M
                 elif Casilla4 == "\n" and Casilla3 == "-" and Casilla2 == " " and Casilla1.isupper() == True :
                     Casilla3 = "•"
                     TextoFinal = TextoFinal + Final
+                elif Casilla4 == "\n" and Casilla3 == "*" and Casilla2 == " " and Casilla1.isupper() == True :
+                    Casilla3 = "•"
+                    TextoFinal = TextoFinal + Final
+                    # m " " \n \n
                 elif Casilla4.islower() == True and Casilla3 == " " and Casilla2 == "\n" and Casilla1 == "\n" :
-                        Casilla3 = ".\n"
-                        TextoFinal = TextoFinal + Final    
+                    Casilla3 = ".\n"
+                    TextoFinal = TextoFinal + Final    
+                elif Casilla4.islower() == True and Casilla3 == "." and Casilla2.isupper() == True  and Casilla1.islower() == True :
+                    Casilla3 = ". "
+                    TextoFinal = TextoFinal + Final    
                 else:
                     TextoFinal = TextoFinal + Final
+
                     
             return TextoFinal
 
@@ -97,14 +115,23 @@ class Operativo():
                 Casilla2 = Casilla1
                 Casilla1 = letra
 
+                # \n . " " \n M
                 if Casilla5 == "\n" and Casilla4 == "." and Casilla3 == " " and Casilla2 == "\n"  and Casilla1.isupper() == True :
                     Casilla4 = "•"
                     TextoFinal = TextoFinal +Final
+                    # \n o " " \n M
                 elif Casilla5 == "\n" and Casilla4 == "o" and Casilla3 == " " and Casilla2 == "\n"   and Casilla1.isupper() == True :
                     Casilla4 = "•"
                     TextoFinal = TextoFinal +Final
+                    # \n - " " \n M
                 elif Casilla5 == "\n" and Casilla4 == "-" and Casilla3 == " " and Casilla2 == "\n"   and Casilla1.isupper() == True :
                     Casilla4 = "•"
+                    TextoFinal = TextoFinal +Final
+                elif Casilla5 == "\n" and Casilla4 == "*" and Casilla3 == " " and Casilla2 == "\n"   and Casilla1.isupper() == True :
+                    Casilla4 = "•"
+                    TextoFinal = TextoFinal +Final
+                elif Casilla5.islower() == True and Casilla4 == " " and Casilla3 == "\n " and Casilla2 == "\n"   and Casilla1.isupper() == True :
+                    Casilla4 = ".\n"
                     TextoFinal = TextoFinal +Final
                 else:
                     TextoFinal = TextoFinal +Final
@@ -133,17 +160,21 @@ class Operativo():
     def insertarSaltosdeLineaEstrategicos(self,RegresoLimpiarTexto):
 
         ContenedorTexto = RegresoLimpiarTexto
+        ContenedorTexto = ContenedorTexto.replace('.', '. ')
         ContenedorTexto = ContenedorTexto.replace('. ', '.\n\n')
+        ContenedorTexto = ContenedorTexto.replace('·', '\n·')
         ContenedorTexto = ContenedorTexto.replace('p.\n\n', 'p.')
-        ContenedorTexto = ContenedorTexto.replace('! ', '!\n\n')
-        ContenedorTexto = ContenedorTexto.replace('? ', '?\n\n')
-        ContenedorTexto = ContenedorTexto.replace(': ', ':\n\n')
+        ContenedorTexto = ContenedorTexto.replace('!', '!\n\n')
+        ContenedorTexto = ContenedorTexto.replace('?', '?\n\n')
+        ContenedorTexto = ContenedorTexto.replace(':', ':\n\n')
         ContenedorTexto = ContenedorTexto.replace('.png', '.png\n\n')
         ContenedorTexto = ContenedorTexto.replace('.jpg', '.jpg\n\n')
         ContenedorTexto = ContenedorTexto.replace('.pdf', '.pdf\n\n')
         ContenedorTexto = ContenedorTexto.replace('y/o', 'y, o')
+        ContenedorTexto = ContenedorTexto.replace('y / o', 'y, o')
         ContenedorTexto = ContenedorTexto.replace('(', '( ')
         ContenedorTexto = ContenedorTexto.replace(')', ' )')
+        ContenedorTexto = ContenedorTexto.replace('}', '}\n')
 
         return ContenedorTexto
 
@@ -163,14 +194,11 @@ class Operativo():
                 Casilla3 = Casilla2
                 Casilla2 = Casilla1
                 Casilla1 = letra
-
+                # m , m
                 if Casilla4.islower() == True and Casilla3 == "," and Casilla2.islower() == True  :
                         Casilla3 = ", "
                         TextoFinal = TextoFinal + Final    
-
-                if Casilla4.islower() == True and Casilla3 == "." and Casilla2.isupper() == True  :
-                        Casilla3 = ".\n"
-                        TextoFinal = TextoFinal + Final    
+                # m . M
                 else:
                     TextoFinal = TextoFinal + Final
                     
@@ -190,10 +218,12 @@ class Operativo():
                 Casilla3 = Casilla2
                 Casilla2 = Casilla1
                 Casilla1 = letra
+                # 8 . \n \n
                 if Casilla4.isnumeric() == True  and Casilla3 == "." and Casilla2 == "\n" and Casilla1 == "\n" :
                     Casilla2 = " "
                     Casilla1 = ""
                     TextoFinal = TextoFinal +Final
+                # m . M m
                 if Casilla4.islower() == True  and Casilla3 == "." and Casilla2.isupper() == True and Casilla1.islower() == True :
                     Casilla3 == ".\n\n"
                     TextoFinal = TextoFinal + Final
@@ -228,7 +258,7 @@ class Operativo():
 
             DatoaVerificar = re.compile(r'\.\d\.')
             comprobar = DatoaVerificar.search(verificar)
-            
+            # \n \n M
             if comprobar != None and Casilla3 == "\n" and Casilla2 == "\n" and Casilla1.isupper() == True :
                 Casilla3 = " "
                 Casilla2 = " "
