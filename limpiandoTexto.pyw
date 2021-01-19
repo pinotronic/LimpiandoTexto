@@ -5,7 +5,6 @@ from ManejoArchivos import *
 from Proceso import *
 import pyperclip as clipboard
 
-
 try:
     import Tkinter as tk
 except ImportError:
@@ -17,8 +16,6 @@ try:
 except ImportError:
     import tkinter.ttk as ttk
     py3 = True
-
-# import LimpiandoTexto4.3_support
 
 def vp_start_gui():
     '''Starting point when module is the main routine.'''
@@ -83,7 +80,11 @@ class FRMLimpiandoTexto:
             print(directorio)
             pass
 
+        def borrarTexto():
+            self.txtCajaTexto.delete(1.0, END)
+
         def envioSustituciondeTexto():
+            
             texto1 = ""
             texto2 = ""
             textoOriginal = self.txtCajaTexto.get(1.0,END)
@@ -95,6 +96,7 @@ class FRMLimpiandoTexto:
             self.txtCajaTexto.insert(END,TextoRecibido)
             textoParaModificar.set("")
             textoqueSustituira.set("")
+            
             pass
 
         def copiarTexto():
@@ -118,7 +120,6 @@ class FRMLimpiandoTexto:
         def salir():
             sys.exit(0)
             pass
-
 
         self.txtCajaTexto = ScrolledText(top)
         self.txtCajaTexto.place(relx=0.008, rely=0.094, relheight=0.752
@@ -240,6 +241,19 @@ class FRMLimpiandoTexto:
         self.btnCambiar.configure(command=lambda: envioSustituciondeTexto())
         self.btnCambiar.configure(text='''+''')
 
+        self.btnBorrar= tk.Button(top)
+        self.btnBorrar.place(relx=0.937, rely=0.859, height=24, width=19)
+        self.btnBorrar.configure(activebackground="#ececec")
+        self.btnBorrar.configure(activeforeground="#000000")
+        self.btnBorrar.configure(background="#ff8000")
+        self.btnBorrar.configure(disabledforeground="#a3a3a3")
+        self.btnBorrar.configure(foreground="#000000")
+        self.btnBorrar.configure(highlightbackground="#d9d9d9")
+        self.btnBorrar.configure(highlightcolor="black")
+        self.btnBorrar.configure(pady="0")
+        self.btnBorrar.configure(command=lambda: borrarTexto())
+        self.btnBorrar.configure(text='''B''')
+
         self.btnCopiar = tk.Button(top)
         self.btnCopiar.place(relx=0.977, rely=0.859, height=24, width=19)
         self.btnCopiar.configure(activebackground="#ececec")
@@ -255,7 +269,7 @@ class FRMLimpiandoTexto:
 
         self.txbTextoModificado = tk.Entry(top)
         self.txbTextoModificado.place(relx=0.485, rely=0.859, height=19
-                , relwidth=0.460)
+                , relwidth=0.440)
         self.txbTextoModificado.configure(background="white")
         self.txbTextoModificado.configure(disabledforeground="#a3a3a3")
         self.txbTextoModificado.configure(font="-family {Courier New} -size 10")
@@ -267,7 +281,6 @@ class FRMLimpiandoTexto:
         self.txbTextoModificado.configure(textvariable = textoqueSustituira)
         self.txbTextoModificado.configure(selectforeground="black")
 
-# The following code is added to facilitate the Scrolled widgets you specified.
 class AutoScroll(object):
     '''Configure the scrollbars for a widget.'''
 
@@ -276,15 +289,15 @@ class AutoScroll(object):
         #  could be used for scrolled entry widget for which vertical
         #  scrolling is not supported. 5/7/14.
         try:
-            vsb = ttk.Scrollbar(master, orient='vertical', command=self.yview)
+            vsb = ttk.Scrollbar(master, orient='vertical', command = self.yview)
         except:
             pass
-        hsb = ttk.Scrollbar(master, orient='horizontal', command=self.xview)
+        hsb = ttk.Scrollbar(master, orient='horizontal', command = self.xview)
 
         #self.configure(yscrollcommand=_autoscroll(vsb),
         #    xscrollcommand=_autoscroll(hsb))
         try:
-            self.configure(yscrollcommand=self._autoscroll(vsb))
+            self.configure(yscrollcommand = self._autoscroll(vsb))
         except:
             pass
         self.configure(xscrollcommand=self._autoscroll(hsb))

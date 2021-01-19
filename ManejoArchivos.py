@@ -1,3 +1,4 @@
+import io
 import os
 import os.path
 import sys
@@ -12,11 +13,10 @@ class ManejoArchivo():
     def cargarInformacion(self):
         filename = filedialog.askopenfilename( )
         #file = open(filename, 'r')
-        file = open(filename, 'r')
+        file = open(filename, 'r', encoding="utf-8")
         buff = file.read()
         file.close()
         return buff,filename
-
 
     def guardarEnArchivo(Archivoagurdar):
         nombrearch = fd.asksaveasfilename(initialdir="/", title="Guardar como", filetypes=(
